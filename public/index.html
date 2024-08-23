@@ -4,17 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Scraper</title>
+    <title>Github Code Extractor</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-    <!-- Title -->
     <div class="title-container">
-        <h1 class="page-title">Github Code Extractor</h1>
+        <h1 class="page-title">
+            Github Code Extractor
+            <a href="https://github.com/0xJensMalm/GitHubExtractorV2" target="_blank" class="github-icon-link">
+                <svg class="github-icon" height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true">
+                    <path fill="#58a6ff"
+                        d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38v-1.27c-2.23.48-2.69-1.08-2.69-1.08-.36-.91-.88-1.15-.88-1.15-.72-.49.06-.48.06-.48.79.06 1.21.81 1.21.81.71 1.22 1.87.87 2.33.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82a7.68 7.68 0 014 0c1.53-1.03 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.65 3.94.29.25.54.74.54 1.49v2.21c0 .21.15.45.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                </svg>
+            </a>
+        </h1>
     </div>
 
-    <!-- First Page: Repo URL Input -->
     <div class="container" id="page1">
         <div class="input-group">
             <input type="text" id="repo-url" placeholder="Paste GitHub repo" required>
@@ -22,7 +29,6 @@
         </div>
     </div>
 
-    <!-- Second Page: Folder Structure and Options -->
     <div class="container" id="page2" style="display: none;">
         <textarea id="output" rows="10" readonly placeholder="Folder structure will appear here..."></textarea>
         <div class="checkbox-group">
@@ -44,7 +50,7 @@
         </div>
         <div class="button-group">
             <button type="button" id="extract-code-btn">Extract Code</button>
-            <button type="button" id="copy-to-clipboard-btn" style="display: none;">Copy to Clipboard</button>
+            <button type="button" id="copy-to-clipboard-btn" style="display: none;">Copy to Clipboard </button>
         </div>
     </div>
 
