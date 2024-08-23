@@ -1,7 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const simpleGit = require("simple-git");
+const http = require("isomorphic-git/http/node");
+const git = require("isomorphic-git");
+const { fs: memfs } = require("memfs");
 
 const scrapeRepo = async (
   repoUrl,
@@ -9,11 +11,17 @@ const scrapeRepo = async (
   addFolderStructure,
   excludeNonCodeFiles
 ) => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "repo-"));
+  const tempDir = path.join(os.tmpdir(), `repo-${Date.now()}`);
 
   try {
-    const git = simpleGit();
-    await git.clone(repoUrl, tempDir);
+    await git.clone({
+      fs: memfs,
+      http,
+      dir: tempDir,
+      url: repoUrl,
+      singleBranch: true,
+      depth: 1,
+    });
 
     const excludedFiles = [
       "package-lock.json",
@@ -32,30 +40,33 @@ const scrapeRepo = async (
     let folderStructure = {};
 
     const walkSync = (dir, filelist = []) => {
-      fs.readdirSync(dir).forEach((file) => {
-        const filePath = path.join(dir, file);
-        const stat = fs.statSync(filePath);
+      const items = memfs.readdirSync(dir);
+
+      items.forEach((item) => {
+        const itemPath = path.join(dir, item);
+        const stat = memfs.statSync(itemPath);
 
         if (stat.isDirectory()) {
-          if (!excludedDirs.includes(file)) {
-            filelist = walkSync(filePath, filelist);
+          if (!excludedDirs.includes(item)) {
+            filelist = walkSync(itemPath, filelist);
           }
         } else {
-          const ext = path.extname(file).slice(1);
+          const ext = path.extname(item).slice(1);
           if (
             (fileTypes.length === 0 || fileTypes.includes(ext)) &&
-            (!excludeNonCodeFiles || !excludedFiles.includes(file))
+            (!excludeNonCodeFiles || !excludedFiles.includes(item))
           ) {
-            const relativePath = path.relative(tempDir, filePath);
+            const relativePath = path.relative(tempDir, itemPath);
             const directory = path.dirname(relativePath);
             if (!folderStructure[directory]) {
               folderStructure[directory] = [];
             }
-            folderStructure[directory].push(file);
+            folderStructure[directory].push(item);
             filelist.push(relativePath);
           }
         }
       });
+
       return filelist;
     };
 
@@ -75,14 +86,13 @@ const scrapeRepo = async (
     output += "Code:\n\n";
     fileList.forEach((file) => {
       output += `${file}:\n`;
-      output += fs.readFileSync(path.join(tempDir, file), "utf8");
+      output += memfs.readFileSync(path.join(tempDir, file), "utf8");
       output += "\n\n";
     });
 
     return output;
-  } finally {
-    // Clean up the temporary directory
-    fs.rmSync(tempDir, { recursive: true, force: true });
+  } catch (error) {
+    throw new Error(`Failed to clone repository: ${error.message}`);
   }
 };
 
