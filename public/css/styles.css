@@ -4,10 +4,23 @@ body {
     color: #ffffff;
     font-family: 'Arial', sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+}
+
+/* Title styles */
+.title-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 28px;
+    margin: 0;
+    padding: 0;
 }
 
 /* Container styles */
