@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Scraper</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- First Page: Repo URL Input -->
+    <div class="container" id="page1">
+        <div class="input-group">
+            <input type="text" id="repo-url" placeholder="Paste GitHub repo" required>
+            <button type="button" id="go-btn">Go</button>
+        </div>
+    </div>
+
+    <!-- Second Page: Folder Structure and Options -->
+    <div class="container" id="page2" style="display: none;">
+        <textarea id="output" rows="10" readonly placeholder="Folder structure will appear here..."></textarea>
+        <div class="checkbox-group">
+            <span class="checkbox-label">Include filetypes:</span>
+            <label><input type="checkbox" name="file_type" value="html" checked> HTML</label>
+            <label><input type="checkbox" name="file_type" value="css" checked> CSS</label>
+            <label><input type="checkbox" name="file_type" value="js" checked> JavaScript</label>
+            <label><input type="checkbox" name="file_type" value="py" checked> Python</label>
+            <label><input type="checkbox" name="file_type" value="json" checked> JSON</label>
+        </div>
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="show-folder-structure" checked> Include Folder Structure</label>
+            <label><input type="checkbox" id="include-ai-prompt"> Include AI Prompt</label>
+            <label><input type="checkbox" id="exclude-non-code"> Exclude dependencies etc.</label>
+        </div>
+        <div id="ai-prompt-group" style="display: none;">
+            <input type="text" id="ai-prompt-text"
+                value="Please help me work on this code. I will provide the code first for you to store, then prompt you in the next message." />
+        </div>
+        <div class="button-group">
+            <button type="button" id="extract-code-btn">Extract Code</button>
+            <button type="button" id="copy-to-clipboard-btn" style="display: none;">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
